@@ -1,0 +1,2 @@
+C:\Users\Phillip\Work\mmm\Installer\bin\Release\en-us\MeshToolsInstaller.msi
+C:\Users\Phillip\Work\mmm\Installer\bin\Release\en-us\MeshToolsInstaller.wixpdb

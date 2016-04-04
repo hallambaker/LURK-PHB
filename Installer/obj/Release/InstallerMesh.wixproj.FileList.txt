@@ -1,0 +1,6 @@
+C:\Users\Phillip\Work\mmm\Installer\bin\Release\en-us\MeshToolsInstaller.msi
+C:\Users\Phillip\Work\mmm\Installer\bin\Release\en-us\MeshToolsInstaller.wixpdb
+obj\Release\Product.wixobj
+obj\Release\InstallerMesh.wixproj.BindContentsFileListen-us.txt
+obj\Release\InstallerMesh.wixproj.BindOutputsFileListen-us.txt
+obj\Release\InstallerMesh.wixproj.BindBuiltOutputsFileListen-us.txt

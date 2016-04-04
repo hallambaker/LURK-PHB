@@ -1,0 +1,13 @@
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\PHB.Apps.Lurk.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\PHB.Apps.Lurk.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\Goedel.Registry.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\libCrypto.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\libCryptoJose.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\libDebug.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\LibProtoGen.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\libCrypto.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\libDebug.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\bin\Release\LibProtoGen.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\obj\Release\PHB.Apps.Lurk.csprojResolveAssemblyReference.cache
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\obj\Release\PHB.Apps.Lurk.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk\obj\Release\PHB.Apps.Lurk.pdb

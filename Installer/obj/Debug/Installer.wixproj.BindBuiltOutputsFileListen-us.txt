@@ -1,0 +1,2 @@
+C:\Users\Phillip\Work\mmm\Installer\bin\Debug\en-us\Installer.msi
+C:\Users\Phillip\Work\mmm\Installer\bin\Debug\en-us\Installer.wixpdb

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>PHB.Apps.Lurk.Client</id>
+    <version>$version$</version>
+    <title>Limited Use of Remote Keys (Proposal)</title>
+    <authors>Phillip Hallam-Baker</authors>
+    <owners>Phillip Hallam-Baker</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/hallambaker/LURK-PHB</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Implementation of Lurk Protocol described in draft-hallambaker-lurk, 
+    client specific library.</description>
+    <releaseNotes>Initial Release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+  </metadata>
+</package>

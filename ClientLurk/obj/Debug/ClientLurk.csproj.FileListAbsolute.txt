@@ -12,9 +12,6 @@ C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\libDebug.xml
 C:\Users\Phillip\Work\applications\Lurk\ClientLurk\obj\Debug\ClientLurk.csprojResolveAssemblyReference.cache
 C:\Users\Phillip\Work\applications\Lurk\ClientLurk\obj\Debug\ClientAcme.exe
 C:\Users\Phillip\Work\applications\Lurk\ClientLurk\obj\Debug\ClientAcme.pdb
-C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\ClientAcme.exe.config
-C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\ClientAcme.exe
-C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\ClientAcme.pdb
 C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\Goedel.Registry.dll
 C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\libCrypto.dll
 C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\libCryptoJose.dll
@@ -36,5 +33,8 @@ C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\libDebug.xml
 C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\PHB.Apps.Lurk.Server.pdb
 C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\Goedel.Protocol.Debug.pdb
 C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\obj\Debug\ClientLurk.csprojResolveAssemblyReference.cache
-C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\obj\Debug\ClientAcme.exe
-C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\obj\Debug\ClientAcme.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\ClientLurk.exe.config
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\ClientLurk.exe
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\bin\Debug\ClientLurk.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\obj\Debug\ClientLurk.exe
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\ClientLurk\obj\Debug\ClientLurk.pdb

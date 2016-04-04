@@ -57,6 +57,7 @@
       <LastGenOutput>Lurk.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="PHB.Apps.Lurk.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\mmm\LibCryptoJose\LibCryptoJose.csproj">

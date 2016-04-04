@@ -7,8 +7,8 @@
     <ProjectGuid>{6F358B62-4A05-4DF7-BC40-D7B8603550B0}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServerAcme</RootNamespace>
-    <AssemblyName>ServerAcme</AssemblyName>
+    <RootNamespace>PHB.Apps.Lurk.Server</RootNamespace>
+    <AssemblyName>ServerLurk</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

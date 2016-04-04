@@ -1,0 +1,2 @@
+C:\Users\Phillip\Work\mmm\Installer\..\Distribution\Release\bin\MeshClient.exe
+C:\Users\Phillip\Work\mmm\Installer\..\Distribution\Release\bin\MeshConnect.exe

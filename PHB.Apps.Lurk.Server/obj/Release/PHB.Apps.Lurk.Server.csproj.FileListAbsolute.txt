@@ -1,0 +1,17 @@
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\PHB.Apps.Lurk.Server.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\PHB.Apps.Lurk.Server.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\Goedel.Protocol.Debug.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\Goedel.Registry.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\libCrypto.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\libCryptoJose.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\libDebug.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\LibProtoGen.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\PHB.Apps.Lurk.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\Goedel.Protocol.Debug.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\libCrypto.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\libDebug.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\LibProtoGen.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\bin\Release\PHB.Apps.Lurk.pdb
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\obj\Release\PHB.Apps.Lurk.Server.csprojResolveAssemblyReference.cache
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\obj\Release\PHB.Apps.Lurk.Server.dll
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\PHB.Apps.Lurk.Server\obj\Release\PHB.Apps.Lurk.Server.pdb
