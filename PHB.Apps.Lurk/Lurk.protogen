@@ -1,0 +1,351 @@
+﻿Protocol PHB.Apps.Lurk Lurk Lurk
+	Using Goedel.Cryptography.Jose 
+
+	Section 1 "Lurk Key Service Reference"
+
+    Service LurkService "_lurk._tcp" "lurk" MeshRequest LurkResponse
+		Description
+			|The LURK key service provides access to a remote key
+			|service. The remote service performs private key related
+			|operations in response to authenticated requests.
+
+	Section 2 "Request Messages"
+		Description
+			|A LURK request payload consists of a payload object
+			|that inherits from the LurkRequest class.
+		Description
+			|Note that the request payload is the subject of
+			|the presentation layer authentication wrapper. Thus
+			|the authantication wrapper is not part of the request payload.
+
+	Message LurkRequest
+		Description
+			|Base class for all request messages.
+		External Goedel.Protocol.Request
+
+	Message LurkKeyRequest
+		Description
+			|Base class for all key request messages.
+		Inherits LurkRequest
+
+	Message LurkResponse
+		External Goedel.Protocol.Response		
+		Description
+			|Base class for all responses. Contains only the
+			|status code and status description fields.
+		Description
+			|A service MAY return either the response message specified
+			|for that transaction or any parent of that message. 
+			|Thus the LurkResponse message MAY be returned in response 
+			|to any request.
+		Integer Status
+			Description
+				|Status return code. The SMTP/HTTP scheme of 2xx = Success,
+				|3xx = incomplete, 4xx = failure is followed.
+		String StatusDescription
+			Description
+				|Text description of the status return code for debugging 
+				|and log file use.
+
+	Section 3 "Successful Response Codes"
+		Description
+			|The following response codes are returned when a
+			|transaction has completed successfully.
+
+	Success SuccessOK 201
+		Description
+			|Operation completed successfully
+
+	Section 3 "Warning Response Codes"
+		Description
+			|The following response codes are returned when a
+			|transaction did not complete because the target
+			|service has been redirected.
+		Description
+			|In the case that a redirect code is returned, the 
+			|StatusDescription field contains the URI of the 
+			|new service. Note however that the redirect location 
+			|indicated in a status response might be incorrect
+			|or even malicious and cannot be considered 
+			|trustworthy without appropriate authentication.
+
+	Warning RedirectPermanent 303
+		Description
+			|Service has been permanently moved
+	Warning RedirectTemporary 307
+		Description
+			|Service has been temporarily moved
+
+	Section 3 "Error Response Codes"
+		Description
+			|A response code in the range 400-499 is
+			|returned when the service was able to process the
+			|transaction but the transaction resulted in an error.
+
+	Error ClientUnauthorized 401
+		Description
+			|Client is not authorized to perform specified request
+	Error NotFound 404
+		Description
+			|The requested object could not be found.
+	Error NotAcceptable 406
+		Description
+			|The request asked for an operation that cannot
+			|be supported because the server does not support 
+			|certain parameters in the request. For example,
+			|specific key sizes, algorithms, etc.
+
+	Structure Version
+		Description
+			|Describes a protocol version.
+		Integer Major
+			Description
+				|Major version number of the service protocol. A higher
+		Integer Minor
+			Description
+				|Minor version number of the service protocol.
+		Struct Encoding Encodings
+			Multiple
+			Description
+				|Enumerates alternative encodings (e.g. ASN.1, XML, JSON-B)
+				|supported by the service. If no encodings are specified, the
+				|JSON encoding is assumed.
+		String URI
+			Multiple
+			Description
+				|The preferred URI for this service. This MAY be used to effect
+				|a redirect in the case that a service moves.
+
+	Structure Encoding
+		Description
+			|Describes a message content encoding.
+		String ID
+			Description
+				|The IANA encoding name
+		String Dictionary
+			Multiple
+			Description
+				|For encodings that employ a named dictionary for tag or data
+				|compression, the name of the dictionary as defined by that 
+				|encoding scheme. 	
+	
+	Structure KeyParameters
+		Description
+			|Specifies a cryptographic algorithm and related parameters. Note
+			|that while the parameters structures allows a key to be specified
+			|that supports multiple operations each key SHOULD only specify 
+			|exactly one operation.
+		Boolean Encrypt
+			Description
+				|Key supports encryption and decryption operations.
+		Boolean Agreement
+			Description
+				|Key supports key agreement operations.
+		Boolean Signature
+			Description
+				|Key Supports signature operations.
+		String Uses
+			Description
+				|Specifies the permitted uses for the key. All the listed
+				|uses are permitted. If present non-empty, the LURK Service 
+				|MUST NOT permit any use not specified.
+
+	Structure ParametersRSA
+		Inherits KeyParameters
+		Description
+			|Describes parameters for the RSA algorithm
+		Integer KeySize
+			Description
+				|The Key Size. Services MUST support key sizes of 2048 and 4096 bits.
+				|Services MAY support other key sizes greater than 2048 bits.
+				|Services MUST NOT support key sizes less than 2048 bits.
+		String Padding
+			Multiple
+			Description
+				|If present, specifies the padding modes that are to be supported
+				|by the key. 
+
+	Structure ParametersDH
+		Inherits KeyParameters
+		Description
+			|Specifies parameters for the Diffie Hellman algorithm. These are the 
+			|prime and the generator which may be specified by name (for known IETF
+			|defined curves) or by the parameters.
+		String Curve
+			Description
+				|Specify the curve to generate a key on by name
+		Binary Prime
+			Description
+				|Prime to use
+		Binary Generator
+			Description
+				|Generator to use
+
+	Structure ParametersECDH
+		Inherits KeyParameters
+		Description
+			|Specifies parameters for Elliptic Curve Diffie Hellman algorithm
+		String Curve
+			Description
+				|The curve name. Valid values are "Curve255" and "Curve448"
+		String Algorithm
+			Description
+				|Specify the precise algorithm and version.
+
+
+    Transaction Admin Hello HelloRequest HelloResponse
+		Description
+			|Report service and version information. 
+		Description
+			|The Hello transaction provides a means of determining which protocol
+			|versions, message encodings and transport protocols are supported by
+			|the service.
+
+	Message HelloRequest
+		Inherits LurkRequest
+
+	Message HelloResponse
+		Description
+			|Always reports success. Describes the configuration of the Mesh
+			|portal service.
+		Inherits LurkResponse
+		Struct Version Version
+			Description
+				|Enumerates the protocol versions supported
+		Struct Version Alternates
+			Multiple
+			Description
+				|Enumerates alternate protocol version(s) supported
+
+
+
+    Transaction Admin Create CreateRequest CreateResponse
+		Description
+			|Create a new public key pair for the specified algorithm and 
+			|cryptographic parameters.
+
+	Message CreateRequest
+		Inherits LurkKeyRequest
+		Description
+			|Request creation of a new key pair
+		TStruct KeyParameters Parameters
+
+	Message CreateResponse
+		Inherits LurkResponse
+		Description
+			|Returns the identifier of a key pair
+		String KeyId
+			Description
+				|Unique identifier for the public key pair created
+				|if the operation succeeded.
+		TStruct Key PublicKey
+			Description
+				|Public key parameters for created key pair.
+
+
+    Transaction Admin Dispose DisposeRequest DisposeResponse
+		Description
+			|Dispose of the specified key pair.
+
+	Message DisposeRequest
+		Inherits LurkKeyRequest
+		Description
+			|Request creation of a new key pair
+		String KeyId
+			Description
+				|The Key to dispose.
+
+	Message DisposeResponse
+		Inherits LurkResponse
+		Description
+			|Reports result of an attempt to dispose of a key pair.
+
+    Transaction Admin Sign SignRequest SignResponse
+		Description
+			|Request signature of a data value or digest
+
+	Message SignRequest
+		Inherits LurkKeyRequest
+		Description
+			|Describe the data to be signed
+		String KeyId
+			Description
+				|The key to be used for the operation.
+		String DigestAlg
+			Description
+				|The digest algorithm to be used.
+		Binary Data
+			Description
+				|Data to be digested and signed.
+		Binary Digest
+			Description
+				|Digest calculated on the data to be signed.
+			Description
+				|This field is ignored if the Data field is present.
+
+	Message SignResponse
+		Inherits LurkResponse
+		Description
+			|Returns the signature response.
+		Binary Value
+			Description
+				|The signature response value.
+
+    Transaction Admin Agree AgreeRequest AgreeResponse
+		Description
+			|Perform a key agreement operation.
+
+	Message AgreeRequest
+		Inherits LurkKeyRequest
+		Description
+			|Specify the key agreement parameters.
+		String KeyId
+			Description
+				|The key to be used for the operation.
+		TStruct Key Public
+			Description
+				|the public key agreement is to be made to.
+
+	Message AgreeResponse
+		Inherits LurkResponse
+		Description
+			|Returns the result of the key agreement
+		Binary Value
+			Description
+				|The key agreement result
+
+    Transaction Admin Decrypt DecryptRequest DecryptResponse
+		Description
+			|Perform a decryption operation.
+
+	Message DecryptRequest
+		Inherits LurkKeyRequest
+		Description
+			|Request a decryption operation.
+		String KeyId
+			Description
+				|The key to be used for the operation.
+		String BulkAlg
+			Description
+				|The bulk decryption algorithm to be used
+		Binary Data
+			Description
+				|Data to be decrypted
+		Binary IV
+			Description
+				|Initialization Vector. This field is ignored
+				|unless the Data field is also specified. If
+				|an algorithm that requires an initialization
+				|vector is specified and this field is empty,
+				|the leading bytes of the Data field are used.
+		Binary WrappedKey
+			Description
+				|Wrapped key data to decrypt
+
+	Message DecryptResponse
+		Inherits LurkResponse
+		Description
+			|Returns the result of the decryption request
+		Binary Value
+			Description
+				|The decrypted data

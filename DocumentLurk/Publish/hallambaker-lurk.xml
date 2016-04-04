@@ -1,0 +1,1159 @@
+<?xml version='1.0'?>
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd'>
+<rfc ipr="trust200902" docName="draft-hallambaker-lurk-01" category="info">
+  <?rfc toc="yes"?> 
+<front>
+<title abbrev="LURK Protocol and Reference">Limited Use of Remote Keys, Protocol and Reference.</title>
+<author fullname="Phillip Hallam-Baker    " initials="P. M.    " surname="Hallam-Baker    ">
+<organization>Comodo Group Inc.    </organization>
+<address>
+<email>philliph@comodo.com</email>
+</address>
+</author>
+<date day="21" month="March" year="2016"/>
+<area>General</area>
+<workgroup/>
+<abstract>
+<t>The Limited Use of Remote Keys (LURK) BOF has been scheduled with the objective of discussing approaches to mitigating security risks to TLS private keys. In particular in situations where a Content Delivery Network (CDN) is used to deliver content and thus the party that is being authenticated is not the party that the user is attempting to authenticate.</t>
+<t>Three classes of solution are considered, short term credentials, a remote service offering to perform private key operations and a remote service that is further constrained through the use of some form of threshold approach. A JSON/HTTP protocol implementing the second and third protocol is demonstrated and documented.</t>
+</abstract>
+</front>
+<middle>
+<section title="Definitions" anchor="Section_1">
+<t>[Please note that due to work in progress to support the new RFC format etc, some of the formatting features are not currently working as they should. These will be fixed in the next version.]</t>
+<section title="Requirements Language" anchor="Section_1_1">
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119].</t>
+</section>
+<section title="Related Specifications" anchor="Section_1_2">
+<t>This protocol is makes use of technology described in the following specifications</t>
+<t>JSON [RFC7159]</t>
+<t>For encoding of message data structures.</t>
+<t>JOSE [RFC7515] [RFC7516] [RFC7518]</t>
+<t>Formats for cryptographic messages and keys in JSON.</t>
+<t>JSON Web Service [draft-hallambaker-json-web-service-02]</t>
+<t>Describes the approach used for Web Service discovery and the encapsulation of JSON messages as HTTP payloads with the necessary authentication and encryption services.</t>
+<t>Uniform Data Fingerprint [draft-hallambaker-udf-03]</t>
+<t>Describes the mechanism used to create identifiers for cryptographic keypairs from the public key.</t>
+<t>In addition, the following specifications are closely related but not required for implementation:</t>
+<t>Transport Layer Security [RFC5246]</t>
+<t>The use of TLS to protect the confidentiality and integrity of all protocol communications is of course highly recommended. It is however highly undesirable for a cryptographic protocol such as LURK should rely on transport layer security enhancements alone. </t>
+<t>The Mathematical Mesh [draft-hallambaker-mesh-architecture-01] [draft-hallambaker-mesh-reference-02]</t>
+<t>MAY be used to establish trust relationships between the parties in the protocol.</t>
+<t>CFRG Elliptic Curves and Algorithms [RFC7748]</t>
+<t>The threshold and proxy re-encryption schemes described are likely to be of most interest in conjunction with the emerging elliptic curve based cryptography.</t>
+<t>JSON-BCD [draft-hallambaker-jsonbcd-05]</t>
+<t>JSON-B or JSON-C encoding may be used if an efficient binary or compressed encoding is required. Alternatively, message structures MAY be encoded according to TLS conventions.</t>
+<t>One piece of technology that is not currently implemented but would be usefully factored out as a separate document is a mechanism to support agreement of symmetric keys and related tickets for use in the payload authentication mechanism.</t>
+</section>
+<section title="Terminology" anchor="Section_1_3">
+<t>The following words and phrases are used as defined terms in this specification:</t>
+<t>Private Key</t>
+<t>Any secret information required to perform a Public Key operation. This includes complete keys and partial keys.</t>
+<t>Partial Key </t>
+<t>In cases where a threshold key scheme is in use, a private partial key is the private key information used to participate in the threshold scheme by one participant. </t>
+<t>Complete Key</t>
+<t>A private key that is sufficient to perform the private key operation without any additional information being provided.</t>
+</section>
+</section>
+<section title="Introduction" anchor="Section_2">
+<t>The Limited Use of Remote Keys (LURK) BOF has been scheduled with the objective of discussing approaches to mitigating security risks to TLS private keys. This objective was initially motivated by the need to achieve site authentication in a scenario where the actual content is delivered by a third party (aka Content Delivery Networks). But as is demonstrated in the following, almost any solution to this problem will have much broader application.</t>
+<t>In evaluating proposals, it is important to consider the following constraints:</t>
+<t>Security</t>
+<t>The security of a public key cryptosystem depends on the secrecy of the private keys. A service that accepts unauthorized requests to perform private key operations completely demolishes the security of the cryptosystem.</t>
+<t>While the introduction of a remote key service provides a new potential point of failure into a Web site deployment, a system that has two points of vulnerability that are well protected is usually more secure than one that has a single point of vulnerability that is unguarded. LURK may provide a solution to one of the principal causes of compromise of code signing infrastructures, the disclosure of insecurely held private keys.</t>
+<t> Infrastructure Impact (Deployability)</t>
+<t>The Web is supported by a large and complex eco-system. A single Web transaction secured by TLS typically depends on at least a dozen parties and may depend on twice that number. It is not just the user and the content provider that are participants. Both use software applications provided by third parties for access which may in turn be the product of collaboration between tens or hundreds of collaborators. Site maintenance is typically outsourced to a specialist in the field who will in turn typically outsource hosting of the site itself. This hosting may in turn be augmented by a content Delivery Network or DDoS mitigation service.</t>
+<t>A proposal that requires changes to be made by many parties in the eco-system will be harder to deploy than a change which can be applied bilaterally or unilaterally.</t>
+<t>Latency</t>
+<t>Delivery of Web Content is a competitive business where time is literally money. Protocol proposals that delay the perceived loading speed of Web sites are likely to be unacceptable.</t>
+<t>Transparency and Audit</t>
+<t>Besides limiting access to the use of a private key, the LURK protocol potentially provides a mechanism for auditing the use of the key. </t>
+<t>Algorithm Agility</t>
+<t>Any scheme should be capable of supporting arbitrary public key algorithms and operations. At minimum, support for RSA, Diffie Hellman and the new CFRG Elliptic Curve algorithms is required.</t>
+<t>Besides Decryption and Digital Signature operations, it would be highly advantageous for any protocol to support Proxy Re-Encryption operations. In particular, support for 'vintage editions' of recryption technology that avoids subsequent IPR encumbrances is highly desirable.</t>
+<t>Leverage Bound Private Keys</t>
+<t>The term 'Trustworthy Computing' covers a wide range of hardware based security measures that are now ubiquitously available on mobile devices and increasingly supported on desktop and server hardware. For purposes of limiting exposure of keys, the </t>
+<section title="Limited Life Credentials" anchor="Section_2_1">
+<t>While the LURK acronym specifies 'Limited Use', it is important to note that the core objective raised by the use scenario at issue is to limit the window of vulnerability for keys which may be achieved by other means than remote access.</t>
+<t>In particular, we can limit exposure to the risk of abuse of a credentialed private key by limiting the validity of the credential, either by severely limiting the validity period of the credential or by employing effective mechanisms for revocation. Since the latter has been attempted many times with little success, we concentrate on the first approach.</t>
+<t>One of the chief concerns when using a CDN is that a machine that might only host a site for a few days or even a few hours requires access to a private key whose credential is typically valid for a year or even more. Hosts that have serviced a site in the past may be rented to other customers for very different purposes before the credentials have expired. The new customer might well have privileged access to the machine and be able to examine disks and memory to recover confidential data including keys.</t>
+<t>Reducing the validity interval of the credential to match that of the host makes good sense. The chief obstacles to this approach being (1) the need to gracefully handle time synchronization errors in Web clients attempting to access the site. And (2) the administrative burden of frequently installing certificate updates.</t>
+<t>Practical experience demonstrates that there is little difficulty incurred by setting certificate the validity interval to 25 hours and that even validity intervals of a few hours incur little inconvenience.</t>
+<t>Automatic issue of certificates is already the subject of the ACME working group and is therefore not considered here except to the extent that it might reduce the significance of the proposed use scenario.</t>
+</section>
+<section title="Private Key Service" anchor="Section_2_2">
+<t>A private key service performs private key operations in response to properly authenticated and authorized requests. At minimum, such a service requires mechanisms to:</t>
+<t>Determine the private key whose use is requested.</t>
+<t>Authenticate and authorize the request.</t>
+<t>Protect the integrity of requests.</t>
+<t>Protect the integrity and confidentiality of responses.</t>
+<t>Such a service might prove insufficient for certain applications for reasons of performance and/or security.</t>
+<t>Batching of requests may be desirable.</t>
+<t>The ability to pre-request operations may be desirable.</t>
+<t>The minimal approach is also unsatisfactory on security grounds. A mechanism that relies on correct configuration of the system alone to prevent unauthorized use is likely to be fragile.</t>
+<t>One approach that could be used to mitigate such risk is to limit the application to specific cryptographic protocols rather than providing unrestricted key exchange or signature capabilities. For example, the service might perform a TLS 1.2 master secret derivation rather than the RSA private key operation on which the exchange is based.</t>
+<t>While this approach has the benefit of limiting the consequences of a breach in theory, the practical effect is likely to be limited as good cryptographic hygiene requires that a key used for one purpose not be used for any other.</t>
+<t>Another disadvantage of this approach is that it provides more information to the Key Service and thus provides more opportunity for a malicious side channel attack. A malicious HSM that knows the origin of the requests that it is dealing can choose to only defect on requests that come from the correct counter-party. A well designed protocol that keeps the HSM ignorant of the source and context of the requests cannot restrict the instances in which it defects and is thus at greater risk of exposure.</t>
+</section>
+<section title="Partial Key Service" anchor="Section_2_3">
+<t>The best way to mitigate the risk of unauthorized service is to make use of some form of key splitting 'threshold' cryptography scheme such that the use of private key information held at the client side must be combined with use of private key information held at the LURK service to effect the desired result.</t>
+<t>This approach uses cryptography to enforce the authorization criteria.</t>
+<t>While there are many threshold schemes that could be used in theory, for purposes of LURK it is only necessary to split a key into some number of parts (typically two) such that all the parts are required to perform a private key operation. Thus </t>
+</section>
+</section>
+<section title="Protocol Overview" anchor="Section_3">
+<t>[Note that in the foregoing examples, a technical limitation in the implementation prevents inclusion of the authentication wrapper used to authenticate protocol requests and responses. Removal of this limitation prior to IETF 95 is anticipated.]</t>
+<t>The LURK protocol has three parties:</t>
+<t>LURK Service [Key Holder]</t>
+<t>The holder of the key material. Responds to requests to create, use and destroy key pair. Optionally keeps audit logs of all operations.</t>
+<t>LURK Client [Key User]</t>
+<t>The party authorized to direct requests to use the key material.</t>
+<t>Administrator [Authenticated Party]</t>
+<t>The party that authorizes LURK Clients to use key material and is authorized to issue creation, and destruction requests for the keys they have created.</t>
+<t>Establishing the Service and Administrator as separate parties is important as it allows the LURK service to be specified in a form that can be readily implemented on a HSM.</t>
+<section title="Establishing Trust Relationships" anchor="Section_3_1">
+<t>The LURK protocol requires two trust relationships to be managed:</t>
+<t>Between the Administrator and the LURK Service</t>
+<t>Between the Client and the LURK Service</t>
+<t>The means of configuration of these relationships is outside the scope of this protocol but it is assumed that each of these parties can authenticate messages from the other using digital signatures and public key exchange.</t>
+<section title="Manual Administration" anchor="Section_3_1_1">
+<t>The necessary trust relationships MAY be established manually. This presents something of a challenge in the Content Delivery Network scenario as LURK Clients are being constantly added and removed.</t>
+</section>
+<section title="Using the Mathematical Mesh" anchor="Section_3_1_2">
+<t>One mechanism that MAY be used to establish the necessary authentication information is the Mathematical Mesh [draft-hallambaker-mesh-architecture-01]. This provides a means of automating the necessary administration processes without needing to add support for these processes in the core LURK specification.</t>
+<t>To begin configuration of a LURK deployment using the Mesh, the administrator:</t>
+<t>Creates a Mesh profile (if they haven't already done so). </t>
+<t>Connects the LURK Service to their profile as an application with configuration privilege.</t>
+<t>Connects the LURK Client to their profile as an application with use privilege.</t>
+<t>[The Mesh application profile for the service will be added to this document as an appendix in due course.]</t>
+<t>Once these steps are complete, all three parties have knowledge of the root of trust from which to accept control instructions (i.e. the Administrator's Mesh Profile fingerprint) and a means of authenticating messages from any of the three parties.</t>
+<t>The administrator MAY configure additional LURK Clients and/or Services in the same fashion.</t>
+<t/>
+</section>
+</section>
+<section title="Service Connection " anchor="Section_3_2">
+<t>A client MAY use the Hello transaction to determine the protocol version(s), encodings and other features that are supported. </t>
+<t>To facilitate interoperability, a LURK service MUST support use of the JSON encoding for the Hello transaction. </t>
+<t>The request message takes no parameters: </t>
+<figure>
+<artwork>
+<![CDATA[POST /.well-known/lurk/HTTP/1.1
+Host: example.com
+Content-Length: 23
+
+{
+  "HelloRequest": {}}]]></artwork>
+</figure>
+<t>The response describes the protocol version  (0.1)  and the encodings  its supports. </t>
+<figure>
+<artwork>
+<![CDATA[HTTP/1.1 200 OK
+Date: Mon 21 Mar 2016 08:07:47
+Content-Length: 403
+
+{
+  "HelloResponse": {
+    "Status": 200,
+    "StatusDescription": "OK",
+    "Version": {
+      "Major": 0,
+      "Minor": 1,
+      "Encodings": [{
+          "ID": "application/json"},
+        {
+          "ID": "application/json-b"},
+        {
+          "ID": "application/json-c",
+          "Dictionary": ["MAK5Z-PEEEQ-PWT53-GRR55-MTBSF-UDVGM"]},
+        {
+          "ID": "application/tls-schema"}]}}}]]></artwork>
+</figure>
+<t>The reference service supports four encodings: </t>
+<t><list style="symbols">
+<t><list style="symbols">
+<t> JSON, The text based encoding used for these examples. </t>
+<t> JSON-B, A superset of the JSON encoding that includes binary encoding of data items. </t>
+<t> JSON-C, A superset of JSON-B that includes support for compression of tags and data items. </t>
+<t> TLS-Schema, An alternative binary encoding that is described by a schema in the notation introduced in the TLS specification.  </t>
+</list></t>
+</list></t>
+<t>The JSON-C encoding provides an additional parameter 'Dictionary' that identifies the tag compression dictionaries that the service knows. This allows the dictionary to be quoted by reference rather than being sent in channel. </t>
+<t>Services MAY provide additional encodings at their option. </t>
+</section>
+<section title="Creation of necessary key pairs " anchor="Section_3_3">
+<t>Key pair creation is a function reserved for the administrator. To create a key pair, the administrator sends an authenticated request to the service. Note that while message layer encryption MAY be used,  it is not actually required in this case. </t>
+<t>The request specifies the algorithm, key parameters and intended  cryptographic uses. The following shows the complete HTTP request for  creation of an RSA signature key with 2048 bit length: </t>
+<t>[Yes, I know there are no authentication wrappers on the following  messages. Just pretend they are there, OK? I have had all of two days to work on this.] </t>
+<figure>
+<artwork>
+<![CDATA[POST /.well-known/lurk/HTTP/1.1
+Host: example.com
+Content-Length: 122
+
+{
+  "CreateRequest": {
+    "Parameters": {
+      "ParametersRSA": {
+        "Signature": true,
+        "KeySize": 2048}}}}]]></artwork>
+</figure>
+<t>The response is likewise authenticated and returns the private key: </t>
+<figure>
+<artwork>
+<![CDATA[HTTP/1.1 200 OK
+Date: Mon 21 Mar 2016 08:07:47
+Content-Length: 612
+
+{
+  "CreateResponse": {
+    "Status": 200,
+    "StatusDescription": "OK",
+    "KeyId": "MAKV7-WMGZG-5RTD7-74BCP-OU6O6-5FOMK",
+    "PublicKey": {
+      "PublicKeyRSA": {
+        "kid": "MAKV7-WMGZG-5RTD7-74BCP-OU6O6-5FOMK",
+        "n": "
+5luc9_gri61VWomUGQ2KaH_6xjTMTWHuCjgdt0ukRCy8lpKMV_iLIt1JsHaq5vuQ
+_6dtpJOKxwkIPIgaA9kguyiZo7Pf6UuxOHEy9Mtx90Re_FWdrWmaD7Jt5Cc7qEib
+ekE5nKkGt_MMvCQHVBXboN_UA1ad5EpUsqJJiCzGk1IQmFr77cmVOfZ7F6e3CW5e
+xYtIsn2U0Qv1Y-bFyAeACoouPO1Twhkr-1HVbxRXE9KBhUdGflqgNIfgwCixwSzC
+RHRpq8kvilDoIjyzCB2huj3El_uogvGES2N2HwyEzS4Z39yy9lEESoshqnf56sBq
+O_k9FbYG2yIjIY_bYV4-hw",
+        "e": "
+AQAB"}}}}]]></artwork>
+</figure>
+<t>The process id repeated to create keypairs for encryption and key agreement. </t>
+<t>Note that even though it is possible to use a key agreement algorithm for encryption and vice versa, the use of these cryptographic primitives in protocols is very different. Hence it is best to treat these as entirely separate for the purposes of this protocol. </t>
+<t>Key agreement key request (payload only) </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "CreateRequest": {
+    "Parameters": {
+      "ParametersECDH": {
+        "Agreement": true,
+        "Curve": "p256",
+        "Algorithm": "cfrg"}}}}]]></artwork>
+</figure>
+<t>Key agreement key response (payload only) </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "CreateResponse": {
+    "Status": 406,
+    "StatusDescription": "Unsupported key parameter"}}]]></artwork>
+</figure>
+<t>Encryption key request (payload only) </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "CreateRequest": {
+    "Parameters": {
+      "ParametersECDH": {
+        "Agreement": true,
+        "Curve": "p256",
+        "Algorithm": "cfrg"}}}}]]></artwork>
+</figure>
+<t>Encryption key response (payload only) </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "CreateResponse": {
+    "Status": 406,
+    "StatusDescription": "Unsupported key parameter"}}]]></artwork>
+</figure>
+</section>
+<section title="Private key decryption " anchor="Section_3_4">
+<t>The message "This information is very secret" has been encrypted using AES 128 in CBC mode and the session key encrypted under the encryption key creates earlier. </t>
+<t>To decrypt the message, the LurkClient sends an authenticated request that specifies the key identifer, wrapped key and encrypted data as follows: </t>
+<figure>
+<artwork>
+<![CDATA[POST /.well-known/lurk/HTTP/1.1
+Host: example.com
+Content-Length: 571
+
+{
+  "DecryptRequest": {
+    "KeyId": "MAIEF-MR3IJ-QMU2U-JRD3H-T2KCU-6D5XM",
+    "BulkAlg": "aescbc256",
+    "Data": "
+EiA8s4xajTHNt66EyI6-yeSojYpZ6IV7J4m5I9PxtzA",
+    "IV": "
+lLcctJ0-5HYy0XgpkGe36A",
+    "WrappedKey": "
+lY8VZFXV1wWXVQIUrXJygIEge-_UQF3jJiCgF9UdY9vKCD-6k37PkoExH_MfEsTa
+h8fqgfb2OTFGugy6HhX8L1u5dpY-ERqaQyVREFV0DQwn4cgWpd07iIG3hQ8wlHvk
+jE-R9m8K9eMkpMXBjcN5upLmuQQ5UFIpKsLbOJT7uVKZtykSL_0waNHj77N4IKZ7
+MXG1B8UWFTaY3kSNitW1YXnSs16I-AMa9AqSQ1x4uKWsjB0kQMSJqtzQl3z79aYL
+B1QaT7RfqhQp9XbCnoNDJhu7LADKplFUlHhkpeWfIVcxz89lb4pWQyYSsSw8n3Hp
+G7iQM8YACMV6uFhDZS14vw"}}]]></artwork>
+</figure>
+<t>The service returns the decrypted message as an encrypted payload: </t>
+<figure>
+<artwork>
+<![CDATA[HTTP/1.1 200 OK
+Date: Mon 21 Mar 2016 08:07:47
+Content-Length: 135
+
+{
+  "DecryptResponse": {
+    "Status": 200,
+    "StatusDescription": "OK",
+    "Value": "
+VGhpcyBpbmZvcm1hdGlvbiBpcyB2ZXJ5IHNlY3JldA"}}]]></artwork>
+</figure>
+<t>[Yes, it isn't encrypted yet, patience, patience. Was Rome built in a day?] </t>
+<t>The inner payload is: </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "DecryptResponse": {
+    "Status": 200,
+    "StatusDescription": "OK",
+    "Value": "
+VGhpcyBpbmZvcm1hdGlvbiBpcyB2ZXJ5IHNlY3JldA"}}]]></artwork>
+</figure>
+<t>Alternatively, the client could send just the wrapped key for decryption and then apply the bulk cipher locally. </t>
+</section>
+<section title="Private key Agreement " anchor="Section_3_5">
+<t>[This is not currently implemented due to lack of the necessary  library to implement the new CFRG algorithms.] </t>
+<t>To request a key agreement operation, the LurkClient specifies the  public key of the counter party and the identifier of the private key to use. A LurkClient MAY specify the digest algorithm and construction mechanism to be used to convert the result of the key agreement into a key. </t>
+<t>Request: </t>
+<t>Response: </t>
+</section>
+<section title="Private key signature " anchor="Section_3_6">
+<t>The LurkClient requires the message "Very important this is not changed" be signed under the signature key created earlier. </t>
+<t>Request: </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "SignRequest": {
+    "KeyId": "MAKV7-WMGZG-5RTD7-74BCP-OU6O6-5FOMK",
+    "DigestAlg": "sha256",
+    "Data": "
+VmVyeSBpbXBvcnRhbnQgdGhpcyBpcyBub3QgY2hhbmdlZA"}}]]></artwork>
+</figure>
+<t>Response: </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "SignResponse": {
+    "Status": 200,
+    "StatusDescription": "OK",
+    "Value": "
+Iv_W58JBoOPAUaPFVmRPYXrYjLRpDEzHntu1lrickw8oSYZPUTrEt7cSwAgKw1jj
+QBHz9oZEfbgKS8tmcHL7a9cheYC_p9QsEOiFzDLuQYU4zZZZFXq69gxqiE3BaPFU
+IxpLDQr7ZkVg4CsPn__B_E1D_3s90w8aWafomEUA9h-afXOi9qDK7CPuDFedbLV5
+lKaZpPFD5F9ABj_ipR_YHJzDexpQoGimAf2q7YczjzJXSG6fLqnCpGUnIvpU2kw2
+7ABtqiC8aY3nwEQpbxhrdYWvB-cMadjNOwXpYKjt3bkUD-JXTUsg5n77PlLRJVIH
+_uQ3N0PhGphFh9PcttXvHw"}}]]></artwork>
+</figure>
+</section>
+<section title="Key Disposal " anchor="Section_3_7">
+<t>After a key pair is no longer required, it SHOULD be deleted. A HSM supporting the LURK protocol SHOULD ensure that some form of secure erase is used to assure destruction of the data. </t>
+<t>Request: </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "DisposeRequest": {
+    "KeyId": "MAKV7-WMGZG-5RTD7-74BCP-OU6O6-5FOMK"}}]]></artwork>
+</figure>
+<t>Response: </t>
+<figure>
+<artwork>
+<![CDATA[{
+  "DisposeResponse": {
+    "Status": 200,
+    "StatusDescription": "OK"}}]]></artwork>
+</figure>
+<t/>
+</section>
+</section>
+<section title="Lurk Key Service Reference " anchor="Section_4">
+<t>SRV Prefix: </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="_lurk._tcp "> </t>
+</list></t>
+</list></t>
+<t>HTTP Well Known Service Prefix: </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="/.well-known/lurk "> </t>
+</list></t>
+</list></t>
+<t>The LURK key service provides access to a remote key service. The remote service performs private key related operations in response to authenticated requests. </t>
+<section title="Request Messages " anchor="Section_4_1">
+<t>A LURK request payload consists of a payload object that inherits from the LurkRequest class. </t>
+<t>Note that the request payload is the subject of the presentation layer authentication wrapper. Thus the authantication wrapper is not part of the request payload. </t>
+<section title="Message: LurkRequest " anchor="Section_4_1_1">
+<t>Base class for all request messages. </t>
+<t>[None] </t>
+</section>
+<section title="Message: LurkKeyRequest " anchor="Section_4_1_2">
+<t>Base class for all key request messages. </t>
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkRequest </t>
+</list></t>
+</list></t>
+<t>[None] </t>
+</section>
+<section title="Message: LurkResponse " anchor="Section_4_1_3">
+<t>Base class for all responses. Contains only the status code and status description fields. </t>
+<t>A service MAY return either the response message specified for that transaction or any parent of that message.  Thus the LurkResponse message MAY be returned in response  to any request. </t>
+<t>Status: Integer (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Status return code. The SMTP/HTTP scheme of 2xx = Success, 3xx = incomplete, 4xx = failure is followed. "> </t>
+</list></t>
+</list></t>
+<t>StatusDescription: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Text description of the status return code for debugging  and log file use. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Successful Response Codes " anchor="Section_4_1_4">
+<t>The following response codes are returned when a transaction has completed successfully. </t>
+<t>[201] SuccessOK </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Operation completed successfully "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Warning Response Codes " anchor="Section_4_1_5">
+<t>The following response codes are returned when a transaction did not complete because the target service has been redirected. </t>
+<t>In the case that a redirect code is returned, the  StatusDescription field contains the URI of the  new service. Note however that the redirect location  indicated in a status response might be incorrect or even malicious and cannot be considered  trustworthy without appropriate authentication. </t>
+<t>[303] RedirectPermanent </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Service has been permanently moved "> </t>
+</list></t>
+</list></t>
+<t>[307] RedirectTemporary </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Service has been temporarily moved "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Error Response Codes " anchor="Section_4_1_6">
+<t>A response code in the range 400-499 is returned when the service was able to process the transaction but the transaction resulted in an error. </t>
+<t>[401] ClientUnauthorized </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Client is not authorized to perform specified request "> </t>
+</list></t>
+</list></t>
+<t>[404] NotFound </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The requested object could not be found. "> </t>
+</list></t>
+</list></t>
+<t>[406] NotAcceptable </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The request asked for an operation that cannot be supported because the server does not support  certain parameters in the request. For example, specific key sizes, algorithms, etc. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Structure: Version " anchor="Section_4_1_7">
+<t>Describes a protocol version. </t>
+<t>Major: Integer (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Major version number of the service protocol. A higher "> </t>
+</list></t>
+</list></t>
+<t>Minor: Integer (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Minor version number of the service protocol. "> </t>
+</list></t>
+</list></t>
+<t>Encodings: Encoding [0..Many] </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Enumerates alternative encodings (e.g. ASN.1, XML, JSON-B) supported by the service. If no encodings are specified, the JSON encoding is assumed. "> </t>
+</list></t>
+</list></t>
+<t>URI: String [0..Many] </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The preferred URI for this service. This MAY be used to effect a redirect in the case that a service moves. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Structure: Encoding " anchor="Section_4_1_8">
+<t>Describes a message content encoding. </t>
+<t>ID: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The IANA encoding name "> </t>
+</list></t>
+</list></t>
+<t>Dictionary: String [0..Many] </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="For encodings that employ a named dictionary for tag or data compression, the name of the dictionary as defined by that  encoding scheme.  "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Structure: KeyParameters " anchor="Section_4_1_9">
+<t>Specifies a cryptographic algorithm and related parameters. Note that while the parameters structures allows a key to be specified that supports multiple operations each key SHOULD only specify  exactly one operation. </t>
+<t>Encrypt: Boolean (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Key supports encryption and decryption operations. "> </t>
+</list></t>
+</list></t>
+<t>Agreement: Boolean (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Key supports key agreement operations. "> </t>
+</list></t>
+</list></t>
+<t>Signature: Boolean (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Key Supports signature operations. "> </t>
+</list></t>
+</list></t>
+<t>Uses: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Specifies the permitted uses for the key. All the listed uses are permitted. If present non-empty, the LURK Service  MUST NOT permit any use not specified. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Structure: ParametersRSA " anchor="Section_4_1_10">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: KeyParameters </t>
+</list></t>
+</list></t>
+<t>Describes parameters for the RSA algorithm </t>
+<t>KeySize: Integer (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The Key Size. Services MUST support key sizes of 2048 and 4096 bits. Services MAY support other key sizes greater than 2048 bits. Services MUST NOT support key sizes less than 2048 bits. "> </t>
+</list></t>
+</list></t>
+<t>Padding: String [0..Many] </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="If present, specifies the padding modes that are to be supported by the key.  "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Structure: ParametersDH " anchor="Section_4_1_11">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: KeyParameters </t>
+</list></t>
+</list></t>
+<t>Specifies parameters for the Diffie Hellman algorithm. These are the  prime and the generator which may be specified by name (for known IETF defined curves) or by the parameters. </t>
+<t>Curve: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Specify the curve to generate a key on by name "> </t>
+</list></t>
+</list></t>
+<t>Prime: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Prime to use "> </t>
+</list></t>
+</list></t>
+<t>Generator: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Generator to use "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Structure: ParametersECDH " anchor="Section_4_1_12">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: KeyParameters </t>
+</list></t>
+</list></t>
+<t>Specifies parameters for Elliptic Curve Diffie Hellman algorithm </t>
+<t>Curve: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The curve name. Valid values are &quot;Curve255&quot; and &quot;Curve448&quot; "> </t>
+</list></t>
+</list></t>
+<t>Algorithm: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Specify the precise algorithm and version. "> </t>
+</list></t>
+</list></t>
+</section>
+</section>
+<section title="Transaction: Hello " anchor="Section_4_2">
+<t>Request: HelloRequest </t>
+<t>Response:HelloResponse </t>
+<t>Report service and version information.  </t>
+<t>The Hello transaction provides a means of determining which protocol versions, message encodings and transport protocols are supported by the service. </t>
+<section title="Message: HelloRequest " anchor="Section_4_2_1">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkRequest </t>
+</list></t>
+</list></t>
+<t>[None] </t>
+</section>
+<section title="Message: HelloResponse " anchor="Section_4_2_2">
+<t>Always reports success. Describes the configuration of the Mesh portal service. </t>
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkResponse </t>
+</list></t>
+</list></t>
+<t>Version: Version (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Enumerates the protocol versions supported "> </t>
+</list></t>
+</list></t>
+<t>Alternates: Version [0..Many] </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Enumerates alternate protocol version(s) supported "> </t>
+</list></t>
+</list></t>
+</section>
+</section>
+<section title="Transaction: Create " anchor="Section_4_3">
+<t>Request: CreateRequest </t>
+<t>Response:CreateResponse </t>
+<t>Create a new public key pair for the specified algorithm and  cryptographic parameters. </t>
+<section title="Message: CreateRequest " anchor="Section_4_3_1">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkKeyRequest </t>
+</list></t>
+</list></t>
+<t>Request creation of a new key pair </t>
+<t>[None] </t>
+</section>
+<section title="Message: CreateResponse " anchor="Section_4_3_2">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkResponse </t>
+</list></t>
+</list></t>
+<t>Returns the identifier of a key pair </t>
+<t>KeyId: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Unique identifier for the public key pair created if the operation succeeded. "> </t>
+</list></t>
+</list></t>
+</section>
+</section>
+<section title="Transaction: Dispose " anchor="Section_4_4">
+<t>Request: DisposeRequest </t>
+<t>Response:DisposeResponse </t>
+<t>Dispose of the specified key pair. </t>
+<section title="Message: DisposeRequest " anchor="Section_4_4_1">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkKeyRequest </t>
+</list></t>
+</list></t>
+<t>Request creation of a new key pair </t>
+<t>KeyId: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The Key to dispose. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Message: DisposeResponse " anchor="Section_4_4_2">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkResponse </t>
+</list></t>
+</list></t>
+<t>Reports result of an attempt to dispose of a key pair. </t>
+<t>[None] </t>
+</section>
+</section>
+<section title="Transaction: Sign " anchor="Section_4_5">
+<t>Request: SignRequest </t>
+<t>Response:SignResponse </t>
+<t>Request signature of a data value or digest </t>
+<section title="Message: SignRequest " anchor="Section_4_5_1">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkKeyRequest </t>
+</list></t>
+</list></t>
+<t>Describe the data to be signed </t>
+<t>KeyId: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The key to be used for the operation. "> </t>
+</list></t>
+</list></t>
+<t>DigestAlg: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The digest algorithm to be used. "> </t>
+</list></t>
+</list></t>
+<t>Data: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Data to be digested and signed. "> </t>
+</list></t>
+</list></t>
+<t>Digest: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Digest calculated on the data to be signed. "> </t>
+<t hangText="This field is ignored if the Data field is present. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Message: SignResponse " anchor="Section_4_5_2">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkResponse </t>
+</list></t>
+</list></t>
+<t>Returns the signature response. </t>
+<t>Value: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The signature response value. "> </t>
+</list></t>
+</list></t>
+</section>
+</section>
+<section title="Transaction: Agree " anchor="Section_4_6">
+<t>Request: AgreeRequest </t>
+<t>Response:AgreeResponse </t>
+<t>Perform a key agreement operation. </t>
+<section title="Message: AgreeRequest " anchor="Section_4_6_1">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkKeyRequest </t>
+</list></t>
+</list></t>
+<t>Specify the key agreement parameters. </t>
+<t>KeyId: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The key to be used for the operation. "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Message: AgreeResponse " anchor="Section_4_6_2">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkResponse </t>
+</list></t>
+</list></t>
+<t>Returns the result of the key agreement </t>
+<t>Value: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The key agreement result "> </t>
+</list></t>
+</list></t>
+</section>
+</section>
+<section title="Transaction: Decrypt " anchor="Section_4_7">
+<t>Request: DecryptRequest </t>
+<t>Response:DecryptResponse </t>
+<t>Perform a decryption operation. </t>
+<section title="Message: DecryptRequest " anchor="Section_4_7_1">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkKeyRequest </t>
+</list></t>
+</list></t>
+<t>Request a decryption operation. </t>
+<t>KeyId: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The key to be used for the operation. "> </t>
+</list></t>
+</list></t>
+<t>BulkAlg: String (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The bulk decryption algorithm to be used "> </t>
+</list></t>
+</list></t>
+<t>Data: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Data to be decrypted "> </t>
+</list></t>
+</list></t>
+<t>IV: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Initialization Vector. This field is ignored unless the Data field is also specified. If an algorithm that requires an initialization vector is specified and this field is empty, the leading bytes of the Data field are used. "> </t>
+</list></t>
+</list></t>
+<t>WrappedKey: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="Wrapped key data to decrypt "> </t>
+</list></t>
+</list></t>
+</section>
+<section title="Message: DecryptResponse " anchor="Section_4_7_2">
+<t><list style="symbols">
+<t><list style="symbols">
+<t> Inherits: LurkResponse </t>
+</list></t>
+</list></t>
+<t>Returns the result of the decryption request </t>
+<t>Value: Binary (Optional) </t>
+<t><list style="hanging">
+<t><list style="hanging">
+<t hangText="The decrypted data "> </t>
+</list></t>
+</list></t>
+</section>
+</section>
+</section>
+<section title="Advanced Functions" anchor="Section_5">
+<t>The functions described in this document are not intended to be an exhaustive list of all the possible features that a HSM providing LURK services might be expected to provide. Possible additional features commonly supported by HSM devices that are not necessarily within the scope of the LURK objectives include:</t>
+<t>Ability to securely transfer key pairs to other LURK devices for backup purposes.</t>
+<t>Maintaining logs of all device operations. Such logs MAY be append only so as to prevent tampering or destruction.</t>
+<t>Constraining the use of a private key to specific protocol uses such as a specific TLS key exchange.</t>
+<t>More interestingly however, we can take advantage of the transition to new cipher suites based on Diffie Hellman to take advantage of some of the interesting properties of this crypto system. </t>
+<t>For example, in any Diffie Hallman type crypto scheme, the shared parameters are a cyclic group G, the private key is an integer n that is less than the order of the group and the public key is |e^n|G where e is a non zero point in G.</t>
+<t>It follows therefore that given two Diffie Hellman key pairs (x, e^x) and (y, e^y), and we can generate a new key pair (x+y, e^x . e^y). This feature permits the co-operative key generation and threshold key agreement schemes described below.</t>
+<section title="Co-operative Key Generation" anchor="Section_5_1">
+<t>An extension to the current protocol supports the use of co-operative key generation techniques. In this approach, a generated Key Pair can be shown to have been derived from specific inputs that guarantee certain properties of the final Key Pair.</t>
+<t>Before requesting key pair generation by the LURK Service, the administrator generates a Key Pair and sends both parts of the key pair to the service. The service then generates a new key pair internally and then combines it in the manner described above to generate the final key pair. The service then returns the public component of both the initial and the derived key pair to allow the administrator to verify that the construction did in fact use the material provided.</t>
+<t>This approach guarantees that the final key pair has at least as much randomness as either of the input key pairs. This provides certain protections against both the use of a faulty number generator by one party or the other and the use of a HSM using a maliciously constructed key pair.  </t>
+</section>
+<section title="Threshold and Proxy Re-Encryption Schemes" anchor="Section_5_2">
+<t>Another interesting possibility is that the use of the private key be split between the LURK Client and LURK Service using a threshold cryptography scheme.</t>
+<t>While there are many threshold schemes in the literature, only some of these are generally considered to be practical. Fortunately, the Diffie Hellman key combination effect described above provides a very simple and practical scheme for the case where there are n shares and all n shares are required to perform a key agreement operation.</t>
+<t>Surprisingly perhaps, the use of such a scheme does not require any changes to the protocol at all as far as the actual use of the key is concerned. Generation of a keys may require changes however since it is now necessary to generate multiple key pairs and communicate them to the appropriate parties.</t>
+</section>
+</section>
+<section title="Algorithms and Identifiers" anchor="Section_6">
+<t>This section is currently mostly a placeholder. It is expected that LURK will support:</t>
+<t>The traditional IETF repertoire of cryptographic algorithms (RSA, DH, etc)</t>
+<t>The new algorithms developed by CFRG and CURDLE.</t>
+<section title="Key Algorithms" anchor="Section_6_1">
+<section title="Parameters RSA" anchor="Section_6_1_1">
+<t>The RSA algorithm supports the following padding modes: PKCS#1, OEAP.</t>
+<t>A LURK Service MUST NOT support key sizes of less than 2048 bits.</t>
+</section>
+<section title="Parameters DH" anchor="Section_6_1_2">
+<t>The Diffie Hellman key agreement mechanism described in [RFC2631] with the named groups defined in [RFC4419] and [RFC5114].</t>
+</section>
+<section title="Parameters ECDH" anchor="Section_6_1_3">
+<t>Elliptic Curve Diffie Hellman on the following groups:</t>
+<t>NIST P256, P384, P521</t>
+<t>Curve 25519 and Curve 448 as specified in [RFC7748]</t>
+</section>
+</section>
+<section title="Key Use Restrictions" anchor="Section_6_2">
+<t>Key use restrictions specify the purposes for which a key may be used. These MAY limit the use of the key to specific key agreement mechanisms (e.g. for TLS, SSH, etc.)</t>
+<section title="RSALG Erb-Saltz" anchor="Section_6_2_1">
+<t>TLS key agreement according to the mechanism described in [draft-erb-lurk-rsalg].</t>
+</section>
+</section>
+</section>
+<section title="Acknowledgements" anchor="Section_7">
+<t>TBS</t>
+</section>
+<section title="Security Considerations" anchor="Section_8">
+<t>[This is just a sketch for the present.]</t>
+<section title="Confidentiality" anchor="Section_8_1">
+<section title="Disclosure of Private Key" anchor="Section_8_1_1">
+<t>The service provider has access to the private key or a partial key which may therefore be at risk of disclosure if the service is breached.</t>
+<t>Best practice dictates that a LURK service employ mechanisms to bind private keys and partial keys to the Host such that extraction is not possible.</t>
+</section>
+<section title="Side Channel Disclosure" anchor="Section_8_1_2">
+<t>A malicious LURK service might intentionally leak a private key or partial key through a side channel. For example the RSA modulus side channel described by Moti Yung.</t>
+<t>Another potential vector for side channel attacks is through any mechanism that involves randomness. For example, a service might leak parts of the private key in nonce values it supplied.</t>
+</section>
+<section title="Targeted Side Channel Disclosure" anchor="Section_8_1_3">
+<t>A malicious LURK service that has context information that allows it to determine the source of a request might only defect on specific requests. For example, leaking private key material on a request from a co-conspirator or leaking session key material when communication is being made to a specific site to facilitate surveillance.</t>
+</section>
+<section title="Traffic Analysis" anchor="Section_8_1_4">
+<t>The patterns of access to a LURK service might reveal information that discloses behaviors of the client using the service.</t>
+</section>
+<section title="Metadata Leakage" anchor="Section_8_1_5">
+<t>A LURK service might log metadata relating to requests that would not otherwise be kept and thus expose the data to the possibility of disclosure.</t>
+<t>Contrawise, metadata capture might be highly desirable to support logging and audit.</t>
+</section>
+</section>
+<section title="Integrity" anchor="Section_8_2">
+<section title="Unauthorized Use of Private Key" anchor="Section_8_2_1">
+<t>A LURK service might provide private key services to unauthorized parties.</t>
+<t>The ability to log and audit use of the service is thus highly desirable.</t>
+</section>
+</section>
+<section title="Availability" anchor="Section_8_3">
+<section title="Cached data" anchor="Section_8_3_1">
+<t>The long term master secrets established in a TLS key exchange may have a lifetime of hours or even days. A host that no longer has access to the LURK service may nevertheless have the ability to establish TLS channels by using cached connection tickets.</t>
+</section>
+</section>
+</section>
+<section title="IANA Considerations" anchor="Section_9">
+<t>[TBS list out all the code points that require an IANA registration]</t>
+</section>
+<section title="Appendix: TLS Schema" anchor="Section_10">
+<t>[TLS notation schema for use with the TLS encoding redacted for brevity.]</t>
+</section>
+<section title="Appendix: JSON-C Tag Dictionary" anchor="Section_11">
+<t>[JSON-C tag dictionary for use with JSON-C encoding redacted for brevity.]</t>
+</section>
+<section title="Appendix: Mesh Application Profile" anchor="Section_12">
+<t>[Not yet implemented.]</t>
+</section>
+</middle>
+<back>
+<references title="Normative References">
+<reference anchor="RFC7159">
+<front>
+<title>The JavaScript Object Notation (JSON) Data Interchange Format</title>
+<author fullname="T. Bray" initials="T." surname="Bray">
+<organization/>
+<address>
+</address>
+</author>
+<date month="March" year="2014"/>
+</front>
+<seriesInfo name="RFC" value="7159"/>
+<seriesInfo name="DOI" value="10.17487/RFC7159"/>
+</reference>
+<reference anchor="RFC7515">
+<front>
+<title>JSON Web Signature (JWS)</title>
+<author fullname="M. Jones" initials="M." surname="Jones">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="J. Bradley" initials="J." surname="Bradley">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="N. Sakimura" initials="N." surname="Sakimura">
+<organization/>
+<address>
+</address>
+</author>
+<date month="May" year="2015"/>
+</front>
+<seriesInfo name="RFC" value="7515"/>
+<seriesInfo name="DOI" value="10.17487/RFC7515"/>
+</reference>
+<reference anchor="RFC7516">
+<front>
+<title>JSON Web Encryption (JWE)</title>
+<author fullname="M. Jones" initials="M." surname="Jones">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="J. Hildebrand" initials="J." surname="Hildebrand">
+<organization/>
+<address>
+</address>
+</author>
+<date month="May" year="2015"/>
+</front>
+<seriesInfo name="RFC" value="7516"/>
+<seriesInfo name="DOI" value="10.17487/RFC7516"/>
+</reference>
+<reference anchor="RFC7518">
+<front>
+<title>JSON Web Algorithms (JWA)</title>
+<author fullname="M. Jones" initials="M." surname="Jones">
+<organization/>
+<address>
+</address>
+</author>
+<date month="May" year="2015"/>
+</front>
+<seriesInfo name="RFC" value="7518"/>
+<seriesInfo name="DOI" value="10.17487/RFC7518"/>
+</reference>
+<reference anchor="RFC5246">
+<front>
+<title>The Transport Layer Security (TLS) Protocol Version 1.2</title>
+<author fullname="T. Dierks" initials="T." surname="Dierks">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="E. Rescorla" initials="E." surname="Rescorla">
+<organization/>
+<address>
+</address>
+</author>
+<date month="August" year="2008"/>
+</front>
+<seriesInfo name="RFC" value="5246"/>
+<seriesInfo name="DOI" value="10.17487/RFC5246"/>
+</reference>
+<reference anchor="RFC7748">
+<front>
+<title>Elliptic Curves for Security</title>
+<author fullname="A. Langley" initials="A." surname="Langley">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="M. Hamburg" initials="M." surname="Hamburg">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="S. Turner" initials="S." surname="Turner">
+<organization/>
+<address>
+</address>
+</author>
+<date month="January" year="2016"/>
+</front>
+<seriesInfo name="RFC" value="7748"/>
+<seriesInfo name="DOI" value="10.17487/RFC7748"/>
+</reference>
+<reference anchor="RFC2631">
+<front>
+<title>Diffie-Hellman Key Agreement Method</title>
+<author fullname="E. Rescorla" initials="E." surname="Rescorla">
+<organization/>
+<address>
+</address>
+</author>
+<date month="June" year="1999"/>
+</front>
+<seriesInfo name="RFC" value="2631"/>
+<seriesInfo name="DOI" value="10.17487/RFC2631"/>
+</reference>
+<reference anchor="RFC4419">
+<front>
+<title>Diffie-Hellman Group Exchange for the Secure Shell (SSH) Transport Layer Protocol</title>
+<author fullname="M. Friedl" initials="M." surname="Friedl">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="N. Provos" initials="N." surname="Provos">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="W. Simpson" initials="W." surname="Simpson">
+<organization/>
+<address>
+</address>
+</author>
+<date month="March" year="2006"/>
+</front>
+<seriesInfo name="RFC" value="4419"/>
+<seriesInfo name="DOI" value="10.17487/RFC4419"/>
+</reference>
+<reference anchor="RFC5114">
+<front>
+<title>Additional Diffie-Hellman Groups for Use with IETF Standards</title>
+<author fullname="M. Lepinski" initials="M." surname="Lepinski">
+<organization/>
+<address>
+</address>
+</author>
+<author fullname="S. Kent" initials="S." surname="Kent">
+<organization/>
+<address>
+</address>
+</author>
+<date month="January" year="2008"/>
+</front>
+<seriesInfo name="RFC" value="5114"/>
+<seriesInfo name="DOI" value="10.17487/RFC5114"/>
+</reference>
+<reference anchor="draft-hallambaker-json-web-service-02">
+<front>
+<title>[Reference Not Found!]</title>
+<author initials="" surname="">
+<organization/>
+<address>
+</address>
+</author>
+<date/>
+</front>
+</reference>
+<reference anchor="draft-hallambaker-udf-03">
+<front>
+<title>[Reference Not Found!]</title>
+<author initials="" surname="">
+<organization/>
+<address>
+</address>
+</author>
+<date/>
+</front>
+</reference>
+<reference anchor="draft-hallambaker-mesh-architecture-01">
+<front>
+<title>[Reference Not Found!]</title>
+<author initials="" surname="">
+<organization/>
+<address>
+</address>
+</author>
+<date/>
+</front>
+</reference>
+<reference anchor="draft-hallambaker-mesh-reference-02">
+<front>
+<title>[Reference Not Found!]</title>
+<author initials="" surname="">
+<organization/>
+<address>
+</address>
+</author>
+<date/>
+</front>
+</reference>
+<reference anchor="draft-hallambaker-jsonbcd-05">
+<front>
+<title>[Reference Not Found!]</title>
+<author initials="" surname="">
+<organization/>
+<address>
+</address>
+</author>
+<date/>
+</front>
+</reference>
+<reference anchor="draft-erb-lurk-rsalg">
+<front>
+<title>[Reference Not Found!]</title>
+<author initials="" surname="">
+<organization/>
+<address>
+</address>
+</author>
+<date/>
+</front>
+</reference>
+</references>
+</back>
+</rfc>

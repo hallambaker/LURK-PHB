@@ -1,0 +1,1353 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>libCryptoJose</name>
+    </assembly>
+    <members>
+        <member name="T:Goedel.Cryptography.Jose.Header">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.#ctor(Goedel.LibCrypto.CryptoProviderEncryption)">
+            <summary>
+            Initialize the alg parameter to match the specified provider.
+            </summary>
+            <param name="Provider"></param>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Header.jku">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Header.jwk">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Header.typ">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Header.cty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Header.crit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "Header" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "Header" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Header.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.SignatureHeader">
+            <summary>
+            Signature header object
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.SignatureHeader.#ctor(Goedel.LibCrypto.CryptoProviderSignature)">
+            <summary>
+            Initialize the alg and kid parameters to match the specified 
+            signature provider.
+            </summary>
+            <param name="SignatureProvider"></param>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.Jose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.ToJson">
+            <summary>
+            Encode object as a JSON byte array.
+            </summary>
+            <returns>The encoded data.</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.ToJsonB">
+            <summary>
+            Encode object as a JSON-B byte array
+            </summary>
+            <returns>The encoded data.</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.ToJsonC(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            Encode object as a JSON-C byte array
+            </summary>
+            <param name="Dictionary">Dictionary for encoding tags.</param>
+            <returns>The encoded data.</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.Tag">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            Construct an instance from a JSON encoded stream.
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.#ctor(System.String)">
+            <summary>
+            Construct an instance from a JSON encoded string.
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Jose.Deserialize(Goedel.Protocol.JSONReader,Goedel.Protocol.JSONObject@)">
+            <summary>
+            Construct an instance from the specified tagged JSONReader stream.
+            </summary>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.JoseWebSignature">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebSignature.Protected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebSignature.Header">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebSignature.Payload">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebSignature.Signature">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "JoseWebSignature" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "JoseWebSignature" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebSignature.BulkAlgorithm">
+            <summary>
+            Get or set the bulk encryption algorithm
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebSignature.ParsedHeader">
+            <summary>
+            Parse the binary signature header
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.#ctor(System.Byte[],Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Sign the specified data with the specified key and construct
+            the corresponding JWS object.
+            </summary>
+            <param name="Data">Data to be signed</param>
+            <param name="SignatureKey">The signature key</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.Verify(System.String,Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Verify the specified signature.
+            </summary>
+            <param name="UDF">The UDF of the purported signature verification key.</param>
+            <param name="Public">The public signature verification key.</param>
+            <returns>True if verification succeeds, otherwise false.</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebSignature.Verify(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Verify the specified signature.
+            </summary>
+            <param name="Public">The public signature verification key.</param>
+            <returns>True if verification succeeds, otherwise false.</returns>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.JoseWebEncryption">
+            <summary>
+            </summary>
+            <summary>
+            Represents a JWE data structure.
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.Protected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.Unprotected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.IV">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.CipherText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.JTag">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.AdditionalAuthenticatedData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.Recipients">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "JoseWebEncryption" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "JoseWebEncryption" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.JoseWebEncryption.BulkAlgorithm">
+            <summary>
+            Get or set the bulk encryption algorithm
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.#ctor(System.Byte[])">
+            <summary>
+            Construct a JWE encryption object and encrypt the specified data.
+            </summary>
+            <param name="Data">The data to be encrypted.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.#ctor(System.Byte[],Goedel.LibCrypto.CryptoProviderEncryption)">
+            <summary>
+            Construct a JWE encryption object and encrypt the specified data
+            using the specified encryption provider.
+            </summary>
+            <param name="Encryptor">Encryption provider to use.</param>
+            <param name="Data">The data to be encrypted.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.#ctor(System.Byte[],System.Collections.Generic.List{Goedel.Cryptography.Jose.Recipient})">
+            <summary>
+            Construct a JWE encryption object and encrypt the specified data
+            and create decryption entries for the specified recipients.
+            </summary>
+            <param name="Recipients">The recipients to create the 
+            decryption blobs for.</param>
+            <param name="Data">The data to be encrypted.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Encrypt(System.Byte[])">
+            <summary>
+            Create a new encryption context and encrypt the data under the 
+            generated content key and IV.
+            </summary>
+            <param name="Data"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Encrypt(System.Byte[],Goedel.LibCrypto.CryptoProviderEncryption)">
+            <summary>
+            Create a new encryption context and encrypt the data under the 
+            generated content key and IV.
+            </summary>
+            <param name="Data">The data to encrypt</param>
+            <param name="Encryptor">The encryption provider to use.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Add(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Add an entry for the specified key to the recipient list.
+            </summary>
+            <param name="EncryptionKey">The encryption key to create the
+            entry for.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Add(Goedel.Cryptography.Jose.Recipient)">
+            <summary>
+            Add a recipient entry to the recipient list.
+            </summary>
+            <param name="Recipient"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Decrypt">
+            <summary>
+            Decrypt the content using the corresponding private key in the local 
+            key store (if found). Throws exception otherwise.
+            </summary>
+            <returns>The decrypted data</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.Decrypt(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Decrypt the content using the specified private key.
+            </summary>
+            <returns>The decrypted data</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.JoseWebEncryption.EncryptKey(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Return an encrypted key data entry for the specified encryption key.
+            </summary>
+            <param name="EncryptionKey">The key to use for encryption.</param>
+            <returns>The encrypted key data.</returns>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.Signed">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Signed.Header">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Signed.Payload">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Signed.Signature">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "Signed" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "Signed" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Signed.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.Encrypted">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Encrypted.Header">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Encrypted.IV">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Encrypted.CipherText">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Encrypted.Signature">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "Encrypted" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "Encrypted" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Encrypted.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.KeyData">
+            <summary>
+            </summary>
+            <summary>
+            Represents a JOSE KeyData structure
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.enc">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.alg">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.kid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.x5u">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.x5c">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.x5t">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.x5tS256">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "KeyData" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "KeyData" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.#ctor(Goedel.LibCrypto.KeyHandle)">
+            <summary>
+            Build a KeyData object from a reference to a key. This may be a certificate,
+            a certificate reference (URL and hash), a UDF value, etc.
+            </summary>
+            <param name="KeyHandle"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.KeyData.#ctor(Goedel.LibCrypto.CryptoKey)">
+            <summary>
+            Builds a KeyData object from a key.
+            </summary>
+            <param name="CryptoKey"></param>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.KeyData.KeyHandle">
+            <summary>
+            Returns a key handle for the specified Key Data.
+            </summary>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.Key">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Key.kty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Key.use">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Key.key_ops">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Key.k">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "Key" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "Key" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.GetKeyPair">
+            <summary>
+            Extract a KeyPair object from the JOSE data structure.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.GetPublic(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Return the public portion of the key pair.
+            </summary>
+            <param name="KeyPair">The key pair.</param>
+            <returns>Public portion.</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Key.GetPrivate(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Return the private portion of the keypair.
+            </summary>
+            <param name="KeyPair">The key pair.</param>
+            <returns>The private data.</returns>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.Recipient">
+            <summary>
+            </summary>
+            <summary>
+            Represents a JWE recipient
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Recipient.Header">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.Recipient.EncryptedKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "Recipient" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "Recipient" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.Recipient.#ctor(Goedel.LibCrypto.KeyPair)">
+            <summary>
+            Encrypt to the specified key of the specified profile.
+            </summary>
+            <param name="KeyPair">KeyPair for the recipient.</param>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.PublicKeyRSA">
+            <summary>
+            </summary>
+            <summary>
+            Represents an RSA Private Key.
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PublicKeyRSA.n">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PublicKeyRSA.e">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "PublicKeyRSA" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "PublicKeyRSA" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.#ctor(System.Security.Cryptography.RSAParameters)">
+            <summary>
+            Construct from a .NET RSA Parameters structure.
+            </summary>
+            <param name="RSAParameters"></param>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PublicKeyRSA.Parameters">
+            <summary>
+            Return the parameters as a .NET RSAParameters structure;
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.#ctor(Goedel.LibCrypto.RSAKeyPair)">
+            <summary>
+            Construct from the spcified RSA Key
+            </summary>
+            <param name="KeyPair">An RSA key Pair.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.RSAParameters">
+            <summary>
+            Return the RSAParameters object.
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PublicKeyRSA.GetKeyPair">
+            <summary>
+            Extract an RSA KeyPair.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Goedel.Cryptography.Jose.PrivateKeyRSA">
+            <summary>
+            </summary>
+            <summary>
+            Represents an RSA Private Key.
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.d">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.p">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.q">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.dp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.dq">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.qi">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.Tag">
+            <summary>
+            Tag identifying this class.
+            </summary>
+            <returns>The tag</returns>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.#ctor(Goedel.Protocol.JSONReader)">
+            <summary>
+            </summary>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.Serialize(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            </summary>
+            <param name="Writer">Output stream</param>
+            <param name="wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.SerializeX(Goedel.Protocol.Writer,System.Boolean,System.Boolean@)">
+            <summary>
+            Serialize this object to the specified output stream.
+            Unlike the Serlialize() method, this method is not inherited from the
+            parent class allowing a specific version of the method to be called.
+            </summary>
+            <param name="_Writer">Output stream</param>
+            <param name="_wrap">If true, output is wrapped with object
+            start and end sequences '{ ... }'.</param>
+            <param name="_first">If true, item is the first entry in a list.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.From(System.Byte[])">
+            <summary>
+            Create a new instance from untagged byte input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.From(System.String)">
+            <summary>
+            Create a new instance from untagged string input.
+            i.e. {... data ... }
+            </summary>	
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.FromTagged(System.Byte[])">
+            <summary>
+            Create a new instance from tagged byte input.
+            i.e. { "PrivateKeyRSA" : {... data ... } }
+            </summary>	
+            <param name="_Data">The input data.</param>
+            <returns>The created object.</returns>				
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.FromTagged(System.String)">
+            <summary>
+            Create a new instance from tagged string input.
+            i.e. { "PrivateKeyRSA" : {... data ... } }
+            </summary>
+            <param name="_Input">The input data.</param>
+            <returns>The created object.</returns>		
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.FromTagged(Goedel.Protocol.JSONReader)">
+            <summary>
+            Deserialize a tagged stream
+            </summary>
+            <param name="JSONReader"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.DeserializeToken(Goedel.Protocol.JSONReader,System.String)">
+            <summary>
+            Having read a tag, process the corresponding value data.
+            </summary>
+            <param name="JSONReader"></param>
+            <param name="Tag"></param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.#ctor(System.Security.Cryptography.RSAParameters)">
+            <summary>
+            Construct from a .NET RSA Parameters structure.
+            </summary>
+            <param name="RSAParameters"></param>
+        </member>
+        <member name="P:Goedel.Cryptography.Jose.PrivateKeyRSA.Parameters">
+            <summary>
+            Return the parameters as a .NET RSAParameters structure;
+            </summary>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.#ctor(Goedel.LibCrypto.RSAKeyPair)">
+            <summary>
+            Construct from the spcified RSA Key
+            </summary>
+            <param name="KeyPair">An RSA key Pair.</param>
+        </member>
+        <member name="M:Goedel.Cryptography.Jose.PrivateKeyRSA.RSAParameters">
+            <summary>
+            Return the RSAParameters object.
+            </summary>
+        </member>
+    </members>
+</doc>

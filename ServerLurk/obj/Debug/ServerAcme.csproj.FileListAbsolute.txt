@@ -1,0 +1,3 @@
+C:\Users\Phillip\OneDrive\Work\applications\Acme\ServerAcme\ServerAcme\bin\Debug\ServerAcme.exe.config
+C:\Users\Phillip\OneDrive\Work\applications\Acme\ServerAcme\bin\Debug\ServerAcme.exe.config
+C:\Users\Phillip\Work\applications\Acme\ServerAcme\bin\Debug\ServerAcme.exe.config

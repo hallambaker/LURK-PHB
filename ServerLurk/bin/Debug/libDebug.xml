@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>libDebug</name>
+    </assembly>
+    <members>
+        <member name="T:Goedel.NullException">
+            <summary>
+            Exception that is never thrown. Useful for 'commenting out' a
+            try/throw block during testing.
+            </summary>
+        </member>
+        <member name="T:Goedel.Throw">
+            <summary>
+            Placeholder exception class.
+            </summary>
+        </member>
+        <member name="F:Goedel.Throw._Message">
+            <summary>
+            The private message data.
+            </summary>
+        </member>
+        <member name="P:Goedel.Throw.Message">
+            <summary>
+            The message data.
+            </summary>
+        </member>
+        <member name="M:Goedel.Throw.#ctor(System.String)">
+            <summary>
+            Create an exception with the specified message.
+            </summary>
+            <param name="Message"></param>
+        </member>
+        <member name="M:Goedel.Throw.If(System.Boolean,System.String)">
+            <summary>
+            Throw an exception if the specified test is not met.
+            </summary>
+            <param name="Test">Must be true or exception is thrown.</param>
+            <param name="Report">Message to report.</param>
+        </member>
+        <member name="M:Goedel.Throw.IfNot(System.Boolean,System.String)">
+            <summary>
+            Throw an exception if the specified test is met.
+            </summary>
+            <param name="Test">Must be false or exception is thrown.</param>
+            <param name="Report">Message to report.</param>
+        </member>
+        <member name="M:Goedel.Throw.Always(System.String)">
+            <summary>
+            Throw an exception.
+            </summary>
+            <param name="Report">Message to report.</param>
+        </member>
+        <member name="T:Goedel.KeyNotFoundException">
+            <summary>
+            The required cryptographic key cannot be found.
+            </summary>
+        </member>
+        <member name="P:Goedel.KeyNotFoundException.Message">
+            <summary>
+            The report message
+            </summary>
+        </member>
+        <member name="M:Goedel.KeyNotFoundException.If(System.Boolean)">
+            <summary>
+            Throw the exception if the condition is true
+            </summary>
+            <param name="Test">Condition to test.</param>
+        </member>
+        <member name="M:Goedel.KeyNotFoundException.IfNot(System.Boolean)">
+            <summary>
+            Throw the exception if the condition is false
+            </summary>
+            <param name="Test">Condition to test.</param>
+        </member>
+        <member name="T:Goedel.Debug.Trace">
+            <summary>
+            Collection of static methods that provide debugging utilities.
+            </summary>
+        </member>
+        <member name="M:Goedel.Debug.Trace.AreEqual(System.Byte[],System.Byte[])">
+            <summary>
+            Perform pairwise test for equality on members of an array. Unlike the
+            builtin functions, ensures debugger stops at useful position.
+            </summary>
+            <param name="X">First array to compare</param>
+            <param name="Y">Second array to compare</param>
+            <returns>True if arrays are equal, otherwise false.</returns>
+        </member>
+        <member name="M:Goedel.Debug.Trace.AssertEqual(System.String,System.Byte[],System.Byte[])">
+            <summary>
+            Perform pairwise test for equality on members of an array. Unlike the
+            builtin functions, throws exception if fails.
+            </summary>
+            <param name="Text">Report for exception.</param>
+            <param name="X">First array to compare</param>
+            <param name="Y">Second array to compare</param>
+            <returns>True if arrays are equal, otherwise throws exception.</returns>
+        </member>
+        <member name="M:Goedel.Debug.Trace.AssertNotEqual(System.String,System.Byte[],System.Byte[])">
+            <summary>
+            Perform pairwise test for inequality on members of an array. Unlike the
+            builtin functions, throws exception if fails.
+            </summary>
+            <param name="Text">Report for exception.</param>
+            <param name="X">First array to compare</param>
+            <param name="Y">Second array to compare</param>
+            <returns>True if arrays are not equal, otherwise throws exception.</returns>
+        </member>
+        <member name="M:Goedel.Debug.Trace.Assert(System.String,System.Boolean)">
+            <summary>
+            Yet another assertion method.
+            </summary>
+            <param name="Text">Text to report.</param>
+            <param name="Test">Test value.</param>
+            <returns>True if test is true, otherwise throws exception.</returns>
+        </member>
+        <member name="M:Goedel.Debug.Trace.Spoil(System.Byte[],System.Byte[])">
+            <summary>
+            Creates a clone of the input array with the first byte flipped.
+            </summary>
+            <param name="Array">input array</param>
+            <param name="BadArray">bad array</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.Spoil(System.Byte[]@)">
+            <summary>
+            Spoil an element in the specified array.
+            </summary>
+            <param name="Array">The array to spoil.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.HexToByte(System.String)">
+            <summary>
+            Convert string of hex data to byte array. [why isn't this in 
+            the conversions library?)
+            </summary>
+            <param name="input">String to convert.</param>
+            <returns>Byte array constructed from the specified value.</returns>
+        </member>
+        <member name="P:Goedel.Debug.Trace.Disable">
+            <summary>
+            Flag allowing output to be disabled.
+            </summary>
+        </member>
+        <member name="M:Goedel.Debug.Trace.NYI(System.String)">
+            <summary>
+            Not Yet Implemented method. Cannot be disabled.
+            </summary>
+            <param name="Report">Text to display on the console.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.TBS(System.String)">
+            <summary>
+            Not Yet Implemented method. Cannot be disabled.
+            </summary>
+            <param name="Report">Text to display on the console.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.WriteLine(System.String)">
+            <summary>
+            Output functions, pipe data to the console right now. In the future, will
+            pipe to a file as well.
+            </summary>
+            <param name="Text"></param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.Write(System.String)">
+            <summary>
+            Write the specified text to the debug output.
+            </summary>
+            <param name="Text"></param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.WriteLine">
+            <summary>
+            Write a newline to the debug output.
+            </summary>
+        </member>
+        <member name="M:Goedel.Debug.Trace.WriteLine(System.String,System.Object)">
+            <summary>
+            Write formatted data to the debug output with following newline.
+            </summary>
+            <param name="Text">Format string</param>
+            <param name="Data">Data object to write.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.WriteLine(System.String,System.Object[])">
+            <summary>
+            Write formatted data to the debug output with following newline.
+            </summary>
+            <param name="Text">Format string</param>
+            <param name="Data">Data objects to write.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.Write(System.String,System.Object)">
+            <summary>
+            Write formatted data to the debug output.
+            </summary>
+            <param name="Text">Format string</param>
+            <param name="Data">Data object to write.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.Write(System.String,System.Object[])">
+            <summary>
+            Write formatted data to the debug output.
+            </summary>
+            <param name="Text">Format string</param>
+            <param name="Data">Data object to write.</param>
+        </member>
+        <member name="M:Goedel.Debug.Trace.WriteHex(System.String,System.Byte[])">
+            <summary>
+            Write out a buffer to the console as hex.
+            </summary>
+            <param name="Text">Tag to identify the data</param>
+            <param name="Data">Data to be written.</param>
+        </member>
+    </members>
+</doc>

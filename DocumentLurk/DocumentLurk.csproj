@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{72BFD223-B3E0-401D-AE72-B4FEFF2FAA4A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExamplesAcme</RootNamespace>
+    <AssemblyName>ExamplesAcme</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Goedel.Registry, Version=1.0.5856.42846, Culture=neutral, PublicKeyToken=00ce4cbe0647f41a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Goedel.Registry.1.0.5856.42846\lib\net40\Goedel.Registry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreateExamples.cs" />
+    <Compile Include="Document.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Document.script</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Document.script">
+      <Generator>gscript</Generator>
+      <LastGenOutput>Document.cs</LastGenOutput>
+    </None>
+    <None Include="Examples\Examples.md" />
+    <None Include="Generated\LurkProtocol.md" />
+    <None Include="hallambaker-lurk.docx" />
+    <None Include="packages.config" />
+    <None Include="Postbuild.bat" />
+    <None Include="Prebuild.bat" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\mmm\Goedel.Protocol.Debug\Goedel.Protocol.Debug.csproj">
+      <Project>{0586b4c1-814c-4d98-b6f1-180cd4e2faab}</Project>
+      <Name>Goedel.Protocol.Debug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mmm\LibCryptoJose\LibCryptoJose.csproj">
+      <Project>{59f7f1a5-abbc-4830-b7a3-140fd8e4c369}</Project>
+      <Name>LibCryptoJose</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mmm\LibCrypto\LibCrypto.csproj">
+      <Project>{1babc0e9-d939-4de5-82a3-16752104b14b}</Project>
+      <Name>LibCrypto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mmm\LibDebug\LibDebug.csproj">
+      <Project>{a8090b80-d658-45f6-bda1-4f9dfd2b976f}</Project>
+      <Name>LibDebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\mmm\LibProtoGen\LibProtoGen.csproj">
+      <Project>{24419f2d-f425-4e0f-a0ea-9d3e7a57e12f}</Project>
+      <Name>LibProtoGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PHB.Apps.Lurk.Client\PHB.Apps.Lurk.Client.csproj">
+      <Project>{4b4a611c-2b5b-498d-b2b4-81ed02a3dc4c}</Project>
+      <Name>PHB.Apps.Lurk.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PHB.Apps.Lurk.Server\PHB.Apps.Lurk.Server.csproj">
+      <Project>{53d5e2b4-61c1-49ea-b004-dfd8249cd8ba}</Project>
+      <Name>PHB.Apps.Lurk.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PHB.Apps.Lurk\PHB.Apps.Lurk.csproj">
+      <Project>{7c03c909-93ec-49cf-a0fa-987dc6b15b23}</Project>
+      <Name>PHB.Apps.Lurk</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Publish\hallambaker-lurk.html" />
+    <Content Include="Publish\hallambaker-lurk.txt" />
+    <Content Include="Publish\hallambaker-lurk.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call "$(ProjectDir)\Prebuild.bat"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

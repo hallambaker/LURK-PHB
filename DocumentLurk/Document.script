@@ -1,0 +1,190 @@
+﻿#using System.Text
+#using PHB.Apps.Lurk
+#using Goedel.Protocol
+#pclass DocumentLurk ExampleGenerator
+
+#method MakeVersion int Ignore
+
+namespace InternetDrafts {
+    class Version {
+        }
+    }
+
+#end method
+
+
+#method LurkExamples CreateExamples Example
+
+####Service Connection
+
+A client MAY use the Hello transaction to determine the protocol
+version(s), encodings and other features that are supported.
+
+To facilitate interoperability, a LURK service MUST support use of the
+JSON encoding for the Hello transaction.
+
+#% var Point = Example.Traces.Get (Example.LabelHello);
+#% Example.Traces.Level = 0;
+
+The request message takes no parameters:
+
+#{Point.Messages[0].String()}
+
+The response describes the protocol version 
+(#{Example.HelloResponse.Version.Major}.#{Example.HelloResponse.Version.Minor}) 
+and the encodings 
+its supports.
+
+#{Point.Messages[1].String()}
+
+The reference service supports four encodings:
+
+* JSON, The text based encoding used for these examples.
+
+* JSON-B, A superset of the JSON encoding that includes binary
+	encoding of data items.
+
+* JSON-C, A superset of JSON-B that includes support for compression
+    of tags and data items.
+
+* TLS-Schema, An alternative binary encoding that is described by a
+	schema in the notation introduced in the TLS specification. 
+
+The JSON-C encoding provides an additional parameter
+'Dictionary' that identifies the tag compression dictionaries that
+the service knows. This allows the dictionary to be quoted by reference
+rather than being sent in channel.
+
+Services MAY provide additional encodings at their option.
+
+####Creation of necessary key pairs
+#% Point = Example.Traces.Get (Example.LabelCreateSign);
+#% Example.Traces.Level = 0;
+
+Key pair creation is a function reserved for the administrator. To
+create a key pair, the administrator sends an authenticated request
+to the service. Note that while message layer encryption MAY be used, 
+it is not actually required in this case.
+
+The request specifies the algorithm, key parameters and intended 
+cryptographic uses. The following shows the complete HTTP request for 
+creation of an RSA signature key with 2048 bit length:
+
+[Yes, I know there are no authentication wrappers on the following 
+messages. Just pretend they are there, OK? I have had all of two
+days to work on this.]
+
+#{Point.Messages[0].String()}
+
+The response is likewise authenticated and returns the private key:
+
+#{Point.Messages[1].String()}
+
+The process id repeated to create keypairs for encryption and key agreement.
+
+Note that even though it is possible to use a key agreement algorithm
+for encryption and vice versa, the use of these cryptographic primitives
+in protocols is very different. Hence it is best to treat these as entirely
+separate for the purposes of this protocol.
+
+Key agreement key request (payload only)
+
+#% Point = Example.Traces.Get (Example.LabelCreateAgree);
+#% Example.Traces.Level = 5;
+#{Point.Messages[0].String()}
+
+Key agreement key response (payload only)
+
+#{Point.Messages[1].String()}
+
+Encryption key request (payload only)
+
+#% Point = Example.Traces.Get (Example.LabelCreateAgree);
+#{Point.Messages[0].String()}
+
+Encryption key response (payload only)
+
+#{Point.Messages[1].String()}
+
+####Private key decryption
+
+The message "#{Example.TestPlaintextEncrypt}" has been encrypted using
+AES 128 in CBC mode and the session key encrypted under the encryption
+key creates earlier.
+
+To decrypt the message, the LurkClient sends an authenticated request
+that specifies the key identifer, wrapped key and encrypted
+data as follows:
+
+
+
+#% Point = Example.Traces.Get (Example.LabelDecrypt);
+#% Example.Traces.Level = 0;
+#{Point.Messages[0].String()}
+
+The service returns the decrypted message as an encrypted payload:
+
+#{Point.Messages[1].String()}
+
+[Yes, it isn't encrypted yet, patience, patience. Was Rome built in a day?]
+
+#% Example.Traces.Level = 5;
+The inner payload is:
+
+#{Point.Messages[1].String()}
+
+Alternatively, the client could send just the wrapped key for decryption
+and then apply the bulk cipher locally.
+
+####Private key Agreement
+
+[This is not currently implemented due to lack of the necessary 
+library to implement the new CFRG algorithms.]
+
+To request a key agreement operation, the LurkClient specifies the 
+public key of the counter party and the identifier of the private
+key to use. A LurkClient MAY specify the digest algorithm and construction
+mechanism to be used to convert the result of the key agreement into
+a key.
+
+Request:
+
+#!% Point = Example.Traces.Get (Example.LabelAgree);
+#!{Point.Messages[0].String()}
+
+Response:
+#!{Point.Messages[1].String()}
+
+####Private key signature
+
+The LurkClient requires the message "#{Example.TestDataSign}"
+be signed under the signature key created earlier.
+
+Request:
+
+#% Example.Traces.Level = 5;
+#% Point = Example.Traces.Get (Example.LabelSign);
+#{Point.Messages[0].String()}
+
+Response:
+#{Point.Messages[1].String()}
+
+####Key Disposal
+
+After a key pair is no longer required, it SHOULD be deleted. A HSM
+supporting the LURK protocol SHOULD ensure that some form of secure
+erase is used to assure destruction of the data.
+
+Request:
+
+#% Point = Example.Traces.Get (Example.LabelDispose);
+#{Point.Messages[0].String()}
+
+Response:
+#{Point.Messages[1].String()}
+
+
+#end method
+
+#end pclass
+#end using

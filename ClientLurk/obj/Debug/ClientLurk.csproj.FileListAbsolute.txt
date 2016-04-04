@@ -1,0 +1,14 @@
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\ClientAcme.exe.config
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\ClientAcme.exe
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\ClientAcme.pdb
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\Goedel.Registry.dll
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\LibProtoGen.dll
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\PHB.Apps.Lurk.dll
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\libDebug.dll
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\LibProtoGen.pdb
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\PHB.Apps.Lurk.pdb
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\libDebug.pdb
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\bin\Debug\libDebug.xml
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\obj\Debug\ClientLurk.csprojResolveAssemblyReference.cache
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\obj\Debug\ClientAcme.exe
+C:\Users\Phillip\Work\applications\Lurk\ClientLurk\obj\Debug\ClientAcme.pdb
