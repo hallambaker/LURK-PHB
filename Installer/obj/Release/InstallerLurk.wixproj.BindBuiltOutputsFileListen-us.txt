@@ -1,0 +1,2 @@
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\Installer\bin\Release\en-us\MeshToolsInstaller.msi
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\Installer\bin\Release\en-us\MeshToolsInstaller.wixpdb

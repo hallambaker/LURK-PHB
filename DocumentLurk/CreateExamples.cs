@@ -76,7 +76,7 @@ namespace DocumentLurk {
             }
 
         public Jose.Key KeySign, KeyEncrypt, KeyAgree;
-        KeyPair KeyPairSign, KeyPairEncrypt, KeyPairAgree;
+        KeyPair KeyPairSign, KeyPairEncrypt;
 
         public string IDSign, IDEncrypt, IDAgree;
 

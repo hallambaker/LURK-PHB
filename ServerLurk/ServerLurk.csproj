@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PHB.Apps.Lurk.Server</RootNamespace>
-    <AssemblyName>ServerLurk</AssemblyName>
+    <AssemblyName>LurkServer</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -56,12 +56,35 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\mmm\LibCryptoJose\LibCryptoJose.csproj">
+      <Project>{59f7f1a5-abbc-4830-b7a3-140fd8e4c369}</Project>
+      <Name>LibCryptoJose</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mmm\LibCrypto\LibCrypto.csproj">
+      <Project>{1babc0e9-d939-4de5-82a3-16752104b14b}</Project>
+      <Name>LibCrypto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mmm\LibDebug\LibDebug.csproj">
+      <Project>{a8090b80-d658-45f6-bda1-4f9dfd2b976f}</Project>
+      <Name>LibDebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\mmm\LibProtoGen\LibProtoGen.csproj">
+      <Project>{24419f2d-f425-4e0f-a0ea-9d3e7a57e12f}</Project>
+      <Name>LibProtoGen</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PHB.Apps.Lurk.Server\PHB.Apps.Lurk.Server.csproj">
+      <Project>{53d5e2b4-61c1-49ea-b004-dfd8249cd8ba}</Project>
+      <Name>PHB.Apps.Lurk.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PHB.Apps.Lurk\PHB.Apps.Lurk.csproj">
       <Project>{7c03c909-93ec-49cf-a0fa-987dc6b15b23}</Project>
       <Name>PHB.Apps.Lurk</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>powershell publishtarget "$(TargetPath)"  Goedel.Registry.dll libCrypto.dll libCryptoJose.dll libDebug.dll libProtoGen.dll PHB.Apps.Lurk.dll PHB.Apps.Lurk.Server.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

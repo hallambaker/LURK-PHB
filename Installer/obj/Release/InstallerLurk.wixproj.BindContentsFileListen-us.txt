@@ -1,0 +1,2 @@
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\Installer\..\Distribution\Release\bin\LurkClient.exe
+C:\Users\Phillip\OneDrive\Work\LURK-PHB\Installer\..\Distribution\Release\bin\LurkServer.exe

@@ -11,7 +11,7 @@
    -->
 
   <!-- Full version number to display -->
-  <?define VersionNumber="!(bind.FileVersion.ServerLurk.exe)" ?>
+  <?define VersionNumber="!(bind.FileVersion.LurkServer.exe)" ?>
 
   <!--
    Upgrade code HAS to be the same for all updates.
