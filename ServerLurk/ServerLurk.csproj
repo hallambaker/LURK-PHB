@@ -56,10 +56,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\mmm\LibProtoGen\LibProtoGen.csproj">
-      <Project>{24419f2d-f425-4e0f-a0ea-9d3e7a57e12f}</Project>
-      <Name>LibProtoGen</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PHB.Apps.Lurk\PHB.Apps.Lurk.csproj">
       <Project>{7c03c909-93ec-49cf-a0fa-987dc6b15b23}</Project>
       <Name>PHB.Apps.Lurk</Name>

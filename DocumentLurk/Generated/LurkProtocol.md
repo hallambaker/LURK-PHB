@@ -63,7 +63,7 @@ and log file use.
 The following response codes are returned when a
 transaction has completed successfully.
 
-[201] SuccessOK
+201 SuccessOK
 :Operation completed successfully
 
 ###Warning Response Codes
@@ -79,10 +79,10 @@ indicated in a status response might be incorrect
 or even malicious and cannot be considered 
 trustworthy without appropriate authentication.
 
-[303] RedirectPermanent
+303 RedirectPermanent
 :Service has been permanently moved
 
-[307] RedirectTemporary
+307 RedirectTemporary
 :Service has been temporarily moved
 
 ###Error Response Codes
@@ -91,13 +91,13 @@ A response code in the range 400-499 is
 returned when the service was able to process the
 transaction but the transaction resulted in an error.
 
-[401] ClientUnauthorized
+401 ClientUnauthorized
 :Client is not authorized to perform specified request
 
-[404] NotFound
+404 NotFound
 :The requested object could not be found.
 
-[406] NotAcceptable
+406 NotAcceptable
 :The request asked for an operation that cannot
 be supported because the server does not support 
 certain parameters in the request. For example,

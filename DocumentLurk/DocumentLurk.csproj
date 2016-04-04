@@ -71,23 +71,23 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\mmm\Goedel.Protocol.Debug\Goedel.Protocol.Debug.csproj">
+    <ProjectReference Include="..\..\mmm\Goedel.Protocol.Debug\Goedel.Protocol.Debug.csproj">
       <Project>{0586b4c1-814c-4d98-b6f1-180cd4e2faab}</Project>
       <Name>Goedel.Protocol.Debug</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\mmm\LibCryptoJose\LibCryptoJose.csproj">
+    <ProjectReference Include="..\..\mmm\LibCryptoJose\LibCryptoJose.csproj">
       <Project>{59f7f1a5-abbc-4830-b7a3-140fd8e4c369}</Project>
       <Name>LibCryptoJose</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\mmm\LibCrypto\LibCrypto.csproj">
+    <ProjectReference Include="..\..\mmm\LibCrypto\LibCrypto.csproj">
       <Project>{1babc0e9-d939-4de5-82a3-16752104b14b}</Project>
       <Name>LibCrypto</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\mmm\LibDebug\LibDebug.csproj">
+    <ProjectReference Include="..\..\mmm\LibDebug\LibDebug.csproj">
       <Project>{a8090b80-d658-45f6-bda1-4f9dfd2b976f}</Project>
       <Name>LibDebug</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\mmm\LibProtoGen\LibProtoGen.csproj">
+    <ProjectReference Include="..\..\mmm\LibProtoGen\LibProtoGen.csproj">
       <Project>{24419f2d-f425-4e0f-a0ea-9d3e7a57e12f}</Project>
       <Name>LibProtoGen</Name>
     </ProjectReference>
@@ -107,7 +107,9 @@
   <ItemGroup>
     <Content Include="Publish\hallambaker-lurk.html" />
     <Content Include="Publish\hallambaker-lurk.txt" />
-    <Content Include="Publish\hallambaker-lurk.xml" />
+    <Content Include="Publish\hallambaker-lurk.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
